@@ -1,5 +1,8 @@
 const byte DHT_PIN = 9;
 
+byte temperature;
+byte humidity;
+
 void setup()
 {
   Serial.begin(9600);
@@ -12,4 +15,5 @@ void loop()
   listenClients();
   listenSensors();
   parseRequest();
+  sendLogs();
 }

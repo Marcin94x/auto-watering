@@ -2,10 +2,11 @@
 
 const char SSID[] = "castle";
 const char PASS[] = "zamek12345678";
-const char HOST_NAME[] = "www.baidu.com";
+const char HOST_NAME[] = "watering.com";
 const byte HOST_PORT = 80;
 
-String plainRequest = "";
+uint8_t plainRequest[1024];
+uint32_t requestLen;
 ESP8266 server(Serial1);
 
 void setupServer() {
@@ -37,17 +38,8 @@ void listenClients()
   {
     Serial.println("create tcp err!");
   }
-  char *hello = "GET / HTTP/1.1\r\nHost: www.baidu.com\r\nConnection: close\r\n\r\n";
-  uint8_t buffer[1024] = {0};
-  server.send((const uint8_t*)hello, strlen(hello));
-  uint32_t len = server.recv(buffer, sizeof(buffer), 10000);
-  if (len > 0) {
-    Serial.print("Received:[");
-    for(uint32_t i = 0; i < len; i++) {
-      Serial.print((char)buffer[i]);
-     }
-     Serial.print("]\r\n");
-  }
+  
+  requestLen = server.recv(plainRequest, sizeof(plainRequest), 10000);
   if (server.releaseTCP());
   else
   {
@@ -55,8 +47,13 @@ void listenClients()
   }
 }
 
+void sendLogs()
+{
+  //server.send();
+}
+
 void parseRequest()
 {
   Serial.print("Request: ");
-  Serial.println(plainRequest);
+  //Serial.println(plainRequest);
 }

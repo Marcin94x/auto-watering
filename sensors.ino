@@ -9,8 +9,11 @@ void setupSensors()
 
 void listenSensors()
 {
+  temperature = dhtSensor.readTemperature();
+  humidity = dhtSensor.readHumidity();
+  
   Serial.print("Air temperature: ");
-  Serial.println(dhtSensor.readTemperature());
+  Serial.println(temperature);
   Serial.print("Air humidity: ");
-  Serial.println(dhtSensor.readHumidity());
+  Serial.println(humidity);
 }
