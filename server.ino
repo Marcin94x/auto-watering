@@ -54,6 +54,4 @@ void listenClients()
 
 void parseRequest()
 {
-  Serial.print("Request: ");
-  Serial.println(plainRequest);
 }
