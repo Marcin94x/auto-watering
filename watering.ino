@@ -36,23 +36,21 @@ void loop() {
 
 int getTemperature() {
   char buffer[10];
-  sprintf(buffer, "t:%d", 33);
-  Serial.print("buffer: ");
-  Serial.println(buffer);
+  sprintf(buffer, "%d", (byte) dhtSensor.readTemperature());
   const uint8_t *temp = (const uint8_t *) buffer;
   return wifi.send(mux_id, temp, strlen(buffer));
 }
 
 int getAirHumidity() {
-  char buffer[10];
-  sprintf(buffer, "%d", dhtSensor.readHumidity());
+  char buffer[4];
+  sprintf(buffer, "%d", (byte) dhtSensor.readHumidity());
   const uint8_t *humid = (const uint8_t *) buffer;
   return wifi.send(mux_id, humid, strlen(buffer));
 }
 
 int getSoilHumidity() {
-  char buffer[10];
-  int humidity = analogRead(SOIL_PIN) / 1024.0 * 100.0;
+  char buffer[4];
+  byte humidity = analogRead(SOIL_PIN) / 1024.0 * 100.0;
   sprintf(buffer, "%d", humidity);
   const uint8_t *humid = (const uint8_t *) buffer;
   return wifi.send(mux_id, humid, strlen(buffer));
@@ -62,17 +60,17 @@ int getInsolation() {
   char buffer[10];
   sensors_event_t event;
   tsl_sensor.getEvent(&event);
-  sprintf(buffer, "%d", event.light);
+  sprintf(buffer, "%d", (byte) event.light);
   const uint8_t *insol = (const uint8_t *) buffer;
   return wifi.send(mux_id, insol, strlen(buffer));
 }
 
 int getLiquidLevel() {
-  char buffer[10];
-  int liquid_level = analogRead(LEVEL_PIN) / 1024.0 * 100.0;
+  char buffer[4];
+  byte liquid_level = analogRead(LEVEL_PIN) / 1024.0 * 100.0;
   sprintf(buffer, "%d", liquid_level);
-  const uint8_t *lev = (const uint8_t *) buffer;
-  return wifi.send(mux_id, lev, strlen(buffer));
+  const uint8_t *lvl = (const uint8_t *) buffer;
+  return wifi.send(mux_id, lvl, strlen(buffer));
 }
 
 int setPump() {

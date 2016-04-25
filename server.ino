@@ -97,17 +97,17 @@ void parseRequest()
   }
   if (request == "gettemp") {
     getTemperature();
-  }
-  if (request == "getairhumid") {
+  } else if (request == "getairhumid") {
     getAirHumidity();
-  }
-  if (request == "getsoilhumid") {
+  } else if (request == "getsoilhumid") {
     getSoilHumidity();
-  }
-  if (request == "getinsol") {
+  } else if (request == "getinsol") {
     getInsolation();
-  }
-  if (request == "getliquidlvl") {
+  } else if (request == "getliquidlvl") {
     getLiquidLevel();
+  } else if (request == "setpump") {
+    setPump();
+  } else if (request == "setpumpoff") {
+    setPumpOff();
   }
 }
