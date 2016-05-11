@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+	<meta charset="UTF-8">
+	<title>Automatyczna stacja podlewania roślin</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Roślinki</h1>
+            <p>Aplikacja do podlewania roślin</p>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Home</div>
+                    <div class="panel-body">
+                        <div class="btn-group-vertical btn-block">
+                            <a href="#" class="btn btn-success btn-lg" role="button">Włącz</a>
+	                        <a class="btn btn-info" role="button">Ustawienia</a>
+		                    <a class="btn btn-info" role="button">Informacje</a>
+		                    <a class="btn btn-info" role="button">Debuging</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Aktualne informacje</div>
+                    <div class="panel-body">
+                        <p>Data: </p>
+	                    <p>Temperatura: </p>
+	                    <p>Wilgotność powietrza: </p>
+	                    <p>Wilgotność gleby: </p>
+	                    <p>Nasłonecznienie: </p>
+	                    <p>Poziom wody: </p>
+                    </div>
+                    <div class="panel-footer">Dane są odświerzane co 5 minut</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Ustawienia</div>
+                    <div class="panel-body">
+                        <form role="form">
+		                    <div class="form-group">
+                                <label for="arduino">Arduino IP:</label>
+                                <input type="text" class="form-control" id="arduino">
+                            </div>
+                            <div class="form-group">
+                                <label for="beaglebone">BeagleBone IP:</label>
+                                <input type="text" class="form-control" id="beaglebone">
+                            </div>
+                            <div class="form-group">
+                                <label for="humidity">Poziom wilgotności:</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="humidity">
+                                    <span class="input-group-addon">+/- 10%</span>
+                                </div>
+                            </div>
+	                    </form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
