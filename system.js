@@ -1,69 +1,69 @@
 var net = require("net");
+var najax = require('najax');
 
 const SEC = 1000;
 const keepOn = 5 * SEC;
-const keepOff = 30 * SEC;
+const keepOff = 45 * SEC;
 
+var webUrl = 'http://localhost:8080/index.php/';
 var system = {
-    holdHumidity: 40,
-    startTime: 0,
-    stopTime: 0,
-    soilHumidity: '',
-    isRunning: false
+    holdHumidity: 0,
+    soilHumidity: 0,
+    isRunning: 0,
+    arduinoHost: '192.168.169.5',
+    arduinoPort: '8090'
 };
 
-setInterval(getSoilHumidity, 30 * SEC);
+setInterval(getSoilHumidity, 60 * SEC);
 setInterval(function() {
-    $.ajax({
+    najax({
         dataType: 'json',
-        url: '',
+        url: webUrl + 'watering/getstatus',
         success: function(data) {
-            system.isRunning = data;
+            system.isRunning = parseInt(data.isOn);
+            system.holdHumidity = parseInt(data.humidity);
+            system.arduinoHost = data.arduino_ip;
+            system.arduinoPort = data.arduino_port;
         }
     });
-    if (isRunning && system.soilHumidity < (system.holdHumidity - 10)) {
+}, 5 * SEC);
+setInterval(function() {
+	if (system.isRunning && system.soilHumidity < (system.holdHumidity - 10)) {
         setPumpOn();
-	    while(Date.now() - system.startTime < keepOn);
-        setPumpOff();
-	    while(Date.now() - system.stopTime < keepOff);
+	    setTimeout(setPumpOff, keepOn);
     }
-}, 1 * SEC);
+}, keepOff);
 
 function getSoilHumidity() {
 	var socket = new net.Socket();
-	socket.connect (PORT, HOST, function() {
+	socket.connect(system.arduinoPort, system.arduinoHost, function() {
   		socket.write('getsoilhumid\n');
 	});
 	socket.on('data', function(data) {
-		console.log('SOIL HUMID: ' + data);
+		data = parseInt(data);
   		system.soilHumidity = data;
 	});
 	socket.on('error', function(err) {
-	    console.log(err);
 	    socket.destroy();
 	});
 }
 
 function setPumpOn() {
 	var socket = new net.Socket();
-	socket.connect (PORT, HOST, function() {
+	socket.connect(system.arduinoPort, system.arduinoHost, function() {
   		socket.write('setpump\n');
-        system.start = Date.now();
 	});
 	socket.on('error', function(err) {
-	    console.log(err);
 	    socket.destroy();
 	});
 }
 
 function setPumpOff() {
 	var socket = new net.Socket();
-	socket.connect (PORT, HOST, function() {
+	socket.connect(system.arduinoPort, system.arduinoHost, function() {
   		socket.write('setpumpoff\n');
-        system.stop = Date.now();
 	});
 	socket.on('error', function(err) {
-	    console.log(err);
 	    socket.destroy();
 	});
 }

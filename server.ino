@@ -1,7 +1,7 @@
 #include <ESP8266.h>
 
-const char SSID[] = "castle";
-const char PASS[] = "zamek12345678";
+const char SSID[] = "watering";
+const char PASS[] = "watering1";
 
 uint32_t len;
 uint8_t buffer[128];
@@ -64,14 +64,8 @@ void listenClients()
       Serial.print((char) buffer[i]);
     }
     Serial.println("]");
+    
     parseRequest();
-
-    /*if(wifi.send(mux_id, buffer, len)) {
-      Serial.print("send back ok\r\n");
-    } 
-    else {
-      Serial.print("send back err\r\n");
-    }*/
 
     if (wifi.releaseTCP(mux_id)) {
       Serial.print("release tcp ");
