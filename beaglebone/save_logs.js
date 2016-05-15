@@ -8,8 +8,8 @@ const MIN = 60 * SEC;
 
 var webUrl = 'http://localhost:8080/index.php/';
 var system = {
-    arduinoHost: '192.168.169.5',
-    arduinoPort: '8090'
+    arduinoHost: '',
+    arduinoPort: ''
 };
 var reading = {
 	date: '',

@@ -10,8 +10,8 @@ var system = {
     holdHumidity: 0,
     soilHumidity: 0,
     isRunning: 0,
-    arduinoHost: '192.168.169.5',
-    arduinoPort: '8090'
+    arduinoHost: '',
+    arduinoPort: ''
 };
 
 setInterval(getSoilHumidity, 60 * SEC);
