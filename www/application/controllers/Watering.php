@@ -52,6 +52,11 @@ class Watering extends CI_Controller {
         $this->Watering_model->setLogs($data);
     }
 
+    public function showCurrentData() {
+        $data = $this->Watering_model->getLog();
+        echo json_encode($data);
+    }
+
     public function showData() {
         $data = $this->Watering_model->getLogs();
         echo json_encode($data);

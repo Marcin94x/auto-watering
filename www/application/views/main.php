@@ -13,6 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?= base_url("assets/css/bootstrap.min.css"); ?>">
 	<script src="<?= base_url("assets/js/jquery-1.12.3.min.js"); ?>"></script>
 	<script src="<?= base_url("assets/js/bootstrap.min.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/Chart.min.js"); ?>"></script>
     <script>
         $(document).ready(function() {
             var isSettings = true;
@@ -122,7 +123,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function updateInfo() {
             $.ajax({
                 dataType: "json",
-                url: "index.php/watering/showdata",
+                url: "index.php/watering/showCurrentdata",
                 success: function(data) {
                     $("#date").html(data.date);
                     $("#temperature").html(data.temperature);
@@ -134,6 +135,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
         }
     </script>
+    <script src="<?= base_url("application/views/draw-chart.js"); ?>"></script>
 </head>
 <body>
     <div class="container">
@@ -205,6 +207,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4" id="chart_panel">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Wykres</div>
+                    <div class="panel-body">
+                        <canvas id="chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div><p class="text-muted center-block">Auto Watering System 2016</p></div>
     </div>
 </body>
 </html>

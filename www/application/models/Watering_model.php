@@ -33,10 +33,16 @@ class Watering_model extends CI_Model {
         $this->db->update('info', $data);
     }
 
-    public function getLogs() {
+    public function getLog() {
         $this->db->order_by('date', 'desc');
         $query = $this->db->get('logs');
         return $query->row();
+    }
+
+    public function getLogs() {
+        $this->db->order_by('date', 'desc');
+        $query = $this->db->get('logs');
+        return $query->result_array();
     }
 
     public function setLogs($data) {
