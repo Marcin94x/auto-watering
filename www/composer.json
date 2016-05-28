@@ -1,22 +1,13 @@
 {
-	"description": "The CodeIgniter framework",
-	"name": "codeigniter/framework",
+	"description": "The auto watering system - web application",
+	"name": "web app",
 	"type": "project",
-	"homepage": "https://codeigniter.com",
 	"license": "MIT",
 	"support": {
-		"forum": "http://forum.codeigniter.com/",
-		"wiki": "https://github.com/bcit-ci/CodeIgniter/wiki",
-		"irc": "irc://irc.freenode.net/codeigniter",
-		"source": "https://github.com/bcit-ci/CodeIgniter"
+		"source": "https://github.com/Marcin94x/auto-watering/tree/master/www"
 	},
 	"require": {
-		"php": ">=5.2.4"
-	},
-	"suggest": {
-		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
-	},
-	"require-dev": {
-		"mikey179/vfsStream": "1.1.*"
+		"php": ">=5.2.4",
+        "database": "mysql"
 	}
 }

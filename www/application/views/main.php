@@ -14,10 +14,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?= base_url("assets/js/jquery-1.12.3.min.js"); ?>"></script>
 	<script src="<?= base_url("assets/js/bootstrap.min.js"); ?>"></script>
     <script src="<?= base_url("assets/js/Chart.min.js"); ?>"></script>
+    <script src="<?= base_url("application/views/draw-chart.js"); ?>"></script>
     <script>
         $(document).ready(function() {
             var isSettings = true;
             var isInfo = true;
+            var isChart = true;
             var arduino_ip = "";
             var arduino_port = "";
             var humidity = "";
@@ -119,6 +121,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $("#info_panel").fadeIn();
                 }
             });
+            $("#chart").on("click", function() {
+                if(isChart) {
+                    isChart = false;
+                    $("#chart_panel").fadeOut();
+                } else {
+                    isChart = true;
+                    $("#chart_panel").fadeIn();
+                }
+            });
         });
         function updateInfo() {
             $.ajax({
@@ -135,7 +146,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
         }
     </script>
-    <script src="<?= base_url("application/views/draw-chart.js"); ?>"></script>
 </head>
 <body>
     <div class="container">
@@ -157,6 +167,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		                    <a class="btn btn-info" role="button" id="info">
                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Informacje
                             </a>
+                            <a class="btn btn-info" role="button" id="chart">
+                                <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> Wykres
+                            </a>
                             <a href="application/logs/sensors.txt" class="btn btn-info" role="button" id="logs">
                                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Pobierz logi
                             </a>
@@ -165,7 +178,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </a>
                         </div>
                     </div>
-                    <div class="panel-footer">Panel główny</div>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4" id="info_panel">
@@ -208,11 +220,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-4" id="chart_panel">
+            <div id="chart_panel">
                 <div class="panel panel-info">
                     <div class="panel-heading">Wykres</div>
                     <div class="panel-body">
-                        <canvas id="chart"></canvas>
+                        <canvas id="chart_canvas"></canvas>
                     </div>
                 </div>
             </div>
