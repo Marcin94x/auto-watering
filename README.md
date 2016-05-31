@@ -16,6 +16,12 @@ The system provides us an intelligent algorithm to watering plants.
 * A pump.
 * A Beaglebone board.
 
+#### Libraries for Arduino:
+
+* Adafruit TSL2561 https://github.com/adafruit/Adafruit_TSL2561
+* DHT sensor library https://github.com/adafruit/DHT-sensor-library
+* ESP8266 https://github.com/itead/ITEADLIB_Arduino_WeeESP8266
+
 ### Description:
 
 #### Arduino:
