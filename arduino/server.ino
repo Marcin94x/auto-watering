@@ -1,24 +1,21 @@
 #include <ESP8266.h>
 
-const char SSID[] = "watering";
-const char PASS[] = "watering1";
+const char SSID[] = "watering"; /**< wifi network name */
+const char PASS[] = "watering1"; /**< wifi network password */
 
-uint32_t len;
-uint8_t buffer[128];
-uint8_t mux_id;
-String request;
+uint32_t len; /**< length of a TCP request */
+uint8_t buffer[128]; /**< buffer for a TCP request */
+uint8_t mux_id; /**< id of a TCP client */
+String request; /**< a request */
 
+/**
+ * Sets up a TCP server on 8090 port.
+ */
 void setupServer() {
   Serial.println("setup wifi begin");
   
   Serial.print("FW Version:");
   Serial.println(wifi.getVersion().c_str());
-  
-  if (wifi.setOprToStationSoftAP()) {
-    Serial.println("to station + softap ok");
-  } else {
-    Serial.println("to station + softap err");
-  }
   
   if (wifi.joinAP(SSID, PASS)) {
     Serial.println("Join AP success");
@@ -49,8 +46,10 @@ void setupServer() {
   Serial.println("setup end");
 }
 
-void listenClients()
-{
+/**
+ * Listens to TCP clients and reads its messages to buffer.
+ */
+void listenClients() {
   len = wifi.recv(&mux_id, buffer, sizeof(buffer), 100);
   if (len > 0) {
     Serial.print("Status:[");
@@ -60,7 +59,7 @@ void listenClients()
     Serial.print("Received from :");
     Serial.print(mux_id);
     Serial.print("[");
-    for(uint32_t i = 0; i < len; i++) {
+    for (uint32_t i = 0; i < len; i++) {
       Serial.print((char) buffer[i]);
     }
     Serial.println("]");
@@ -83,22 +82,39 @@ void listenClients()
   }
 }
 
-void parseRequest()
-{
+/**
+ * Analyzes a received message and sends an answer.
+ */
+void parseRequest() {
   request = "";
   for (uint32_t i = 0; i < len - 1; i++) {
     request += (char) buffer[i];
   }
   if (request == "gettemp") {
-    getTemperature();
+    char buffer[4];
+    sprintf(buffer, "%d", getTemperature());
+    const uint8_t *temp = (const uint8_t *) buffer;
+    wifi.send(mux_id, temp, strlen(buffer));
   } else if (request == "getairhumid") {
-    getAirHumidity();
+    char buffer[4];
+    sprintf(buffer, "%d", getAirHumidity());
+    const uint8_t *humid = (const uint8_t *) buffer;
+    wifi.send(mux_id, humid, strlen(buffer));
   } else if (request == "getsoilhumid") {
-    getSoilHumidity();
+    char buffer[4];
+    sprintf(buffer, "%d", getSoilHumidity());
+    const uint8_t *humid = (const uint8_t *) buffer;
+    wifi.send(mux_id, humid, strlen(buffer));
   } else if (request == "getinsol") {
-    getInsolation();
+    char buffer[4];
+    sprintf(buffer, "%d", getInsolation());
+    const uint8_t *insol = (const uint8_t *) buffer;
+    wifi.send(mux_id, insol, strlen(buffer));
   } else if (request == "getliquidlvl") {
-    getLiquidLevel();
+    char buffer[4];
+    sprintf(buffer, "%d", getLiquidLevel());
+    const uint8_t *lvl = (const uint8_t *) buffer;
+    wifi.send(mux_id, lvl, strlen(buffer));
   } else if (request == "setpump") {
     setPump();
   } else if (request == "setpumpoff") {

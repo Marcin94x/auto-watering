@@ -1,3 +1,6 @@
+/**
+ * Sets up DHT and TSL sensors.
+ */
 void setupSensors() {
   dhtSensor.begin();
   tsl_sensor.begin();
@@ -5,6 +8,9 @@ void setupSensors() {
   tsl_sensor.setIntegrationTime(TSL2561_INTEGRATIONTIME_101MS);
 }
 
+/**
+ * Sets up debugging by the serial.
+ */
 void setupDebugSensors() {
   Serial.println("Sensors test:");
   Serial.println("a - read temperature,");
@@ -16,34 +22,35 @@ void setupDebugSensors() {
   Serial.println("g - turn pump off.");
 }
 
+/**
+ * Listens to serial commends.
+ */
 void debugSensors() {
   char choice = Serial.read();
   switch (choice) {
     case 'a' :
       Serial.print("Temperature: ");
-      Serial.print(dhtSensor.readTemperature());
+      Serial.print(getTemperature());
       Serial.println(" degree C");
       break;
     case 'b' :
       Serial.print("Air humidity: ");
-      Serial.print(dhtSensor.readHumidity());
+      Serial.print(getAirHumidity());
       Serial.println(" %");
       break;
     case 'c' :
       Serial.print("Soil humidity: ");
-      Serial.print(analogRead(SOIL_PIN) / 1024.0 * 100.0);
+      Serial.print(getSoilHumidity());
       Serial.println(" %");
       break;
     case 'd' :
       Serial.print("Insolation: ");
-      sensors_event_t event;
-      tsl_sensor.getEvent(&event);
-      Serial.print(event.light);
+      Serial.print(getInsolation());
       Serial.println(" lux");
       break;
     case 'e' :
       Serial.print("Liquid level: ");
-      Serial.print(analogRead(LEVEL_PIN) / 1024.0 * 100.0);
+      Serial.print(getLiquidLevel());
       Serial.println(" %");
       break;
     case 'f' :

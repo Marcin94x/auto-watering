@@ -16,14 +16,13 @@ const byte PUMP_PIN = 11; /**< relay for the water pump pin */
  * Sensors that use included libraries.
  */ 
 ESP8266 wifi(Serial3, 115200); /**< a ESP8266 wifi module connected to Serial 3 */
-DHT dhtSensor(DHT_PIN, DHT11); /**< a DHT11 sensor */
+DHT dhtSensor(DHT_PIN, DHT11); /**< a DHT11 air temperature and humidity sensor */
 Adafruit_TSL2561_Unified tsl_sensor = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345); /**< a TSL2561 light sensor */
 
-extern uint8_t mux_id; /**< @see mux_id in server.ino */
+const unsigned long line_time = 30 * 1000; /**< maximal time of continuous pump action */
 bool is_pump_on = false; /**< checks if the pump is on */
 unsigned int start_time = 0; /**< start time of the pump */
 unsigned int current_time = 0; /**< time of working system in ms */
-const unsigned long line_time = 30 * 1000; /**< maximal time of continuous pump action */
 
 /**
  * Sets up serial, server, sensors, debugging and the pump.
@@ -47,70 +46,53 @@ void loop() {
 }
 
 /**
- * Reads air temperature from the DHT11 sensor and sends temperature in Celsius degree.
- * @return The status of sending an information.
+ * Reads air temperature from the DHT11 sensor and returns temperature in Celsius degree.
+ * @return Air temperature in Celsius degree.
  */
-int getTemperature() {
-  char buffer[4];
-  sprintf(buffer, "%d", (byte) dhtSensor.readTemperature());
-  const uint8_t *temp = (const uint8_t *) buffer;
-  return wifi.send(mux_id, temp, strlen(buffer));
+byte getTemperature() {
+  return dhtSensor.readTemperature();
 }
 
 /**
- * Reads air humidity from the DHT11 sensor and sends humidity in percents.
- * @return The status of sending an information.
+ * Reads air humidity from the DHT11 sensor and returns humidity in percents.
+ * @return Air humidity in percents.
  */
-int getAirHumidity() {
-  char buffer[4];
-  sprintf(buffer, "%d", (byte) dhtSensor.readHumidity());
-  const uint8_t *humid = (const uint8_t *) buffer;
-  return wifi.send(mux_id, humid, strlen(buffer));
+byte getAirHumidity() {
+  return dhtSensor.readHumidity();
 }
 
 
 /**
- * Reads soil humidity from the sensor and sends humidity in percents.
- * @return The status of sending an information.
+ * Reads soil humidity from the sensor and returns humidity in percents.
+ * @return Soil humidity in percents.
  */
-int getSoilHumidity() {
-  char buffer[4];
-  byte humidity = analogRead(SOIL_PIN) / 1024.0 * 100.0;
-  sprintf(buffer, "%d", humidity);
-  const uint8_t *humid = (const uint8_t *) buffer;
-  return wifi.send(mux_id, humid, strlen(buffer));
+byte getSoilHumidity() {
+  return analogRead(SOIL_PIN) / 1024.0 * 100.0;
 }
 
 /**
- * Reads insolation from the TSL sensor and sends insolation in lux.
- * @return The status of sending an information.
+ * Reads insolation from the TSL sensor and returns insolation in lux.
+ * @return Insolation in lux.
  */
-int getInsolation() {
-  char buffer[10];
+byte getInsolation() {
   sensors_event_t event;
   tsl_sensor.getEvent(&event);
-  sprintf(buffer, "%d", (byte) event.light);
-  const uint8_t *insol = (const uint8_t *) buffer;
-  return wifi.send(mux_id, insol, strlen(buffer));
+  return event.light;
 }
 
 /**
- * Reads insolation from the TSL sensor and sends insolation in lux.
- * @return The status of sending an information.
+ * Reads water level from the sensor and returns liquid level in percents.
+ * @return Liquid level in percents.
  */
-int getLiquidLevel() {
-  char buffer[4];
-  byte liquid_level = analogRead(LEVEL_PIN) / 1024.0 * 100.0;
-  sprintf(buffer, "%d", liquid_level);
-  const uint8_t *lvl = (const uint8_t *) buffer;
-  return wifi.send(mux_id, lvl, strlen(buffer));
+byte getLiquidLevel() {
+  return analogRead(LEVEL_PIN) / 1024.0 * 100.0;
 }
 
 /**
  * Turns the water pump on.
- * @return The status of sending an information.
+ * @return Success.
  */
-int setPump() {
+byte setPump() {
   is_pump_on = true;
   start_time = millis();
   digitalWrite(PUMP_PIN, LOW);
@@ -119,9 +101,9 @@ int setPump() {
 
 /**
  * Turns the water pump off.
- * @return The status of sending an information.
+ * @return Success.
  */
-int setPumpOff() {
+byte setPumpOff() {
   is_pump_on = false;
   digitalWrite(PUMP_PIN, HIGH);
   return 1;

@@ -7,6 +7,13 @@ The system provides us an intelligent algorithm to watering plants.
 ### Requirements:
 
 * An Arduino compatible board.
+* DHT11 sensor.
+* TSL2561 sensor.
+* ESP8266 wifi module.
+* An analog soil humidity sensor.
+* An analog liquid level sensor.
+* A relay.
+* A pump.
 * A Beaglebone board.
 
 ### Description:
